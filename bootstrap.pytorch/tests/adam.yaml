@@ -1,0 +1,5 @@
+__include__:
+  - default.yaml
+  - sgd.yaml
+message: adam
+adam: True

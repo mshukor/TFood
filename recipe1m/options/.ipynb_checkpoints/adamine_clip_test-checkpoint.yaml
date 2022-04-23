@@ -1,0 +1,45 @@
+__include__: abstract.yaml
+exp:
+    dir: /data/mshukor/logs/recipe1m/adamine_clip_test
+dataset:
+    name: recipe1m_clip
+    freq_mismatch: 0.0
+    debug: False
+    clip_tokens_path: /data/mshukor/data/recipe1m/recipe1M/layer1_clip
+model:
+    name: trijoint_clip
+    with_classif: False
+    only_clip: False
+    only_title: True
+    projection_layer: True # to be removedd with only clip
+    clip_tokenize: False
+    network:
+        backbone_name: vit
+    criterion:
+        name: trijoint
+        keep_background: False
+        retrieval_strategy:
+            name: triplet # quadruplet, triplet, pairwise, or pairwise_pytorch
+            margin: 0.3
+            sampling: max_negative # random (outdated), max_negative, or prob_negative
+            nb_samples: 9999
+            aggregation: valid # mean, valid (adamine)
+            substrategy:
+                - IRR
+                - RII
+                - SIRR
+                - SRII
+            substrategy_weights:
+                - 1.0
+                - 1.0
+                - 0.1
+                - 0.1
+optimizer:
+    switch_epoch: 20 # for test
+misc:
+    cuda: True
+    seed: 1338
+    logs_name:
+    device_id: 2 #[0, 3] # can be a list for multigpus
+    data_parrallel: False
+    distributed_data_parrallel: False

@@ -1,0 +1,44 @@
+exp:
+  dir: logs/mnist/sgd
+  resume: null
+dataset:
+  import: mnist.datasets.factory
+  name: mnist
+  dir: data/mnist
+  train_split: train
+  eval_split: val
+  nb_threads: 4
+  batch_size: 64
+model:
+  name: simple
+  network:
+    import: mnist.models.networks.factory
+    name: net
+  criterion:
+    name: nll
+  metric:
+    name: accuracy
+    topk:
+    - 1
+    - 5
+optimizer:
+  name: sgd
+  lr: 0.01
+  momentum: 0.5
+engine:
+  name: default
+  debug: false
+  nb_epochs: 10
+  print_freq: 10
+  saving_criteria:
+  - loss:min
+  - accuracy_top1:max
+  - accuracy_top5:max
+misc:
+  cuda: false
+  seed: 1337
+view:
+- logs:train_epoch.loss+logs:eval_epoch.loss
+- logs:train_batch.loss
+- logs:train_epoch.accuracy_top1+logs:eval_epoch.accuracy_top1
+- logs:train_epoch.accuracy_top5+logs:eval_epoch.accuracy_top5

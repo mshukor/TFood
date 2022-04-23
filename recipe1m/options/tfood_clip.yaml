@@ -1,0 +1,97 @@
+__include__: abstract.yaml
+exp:
+    dir: /data/mshukor/logs/recipe1m/adamine_vit_clip_recipe_h_transformer_with_titles_cross_dec_rec_avg_cat_cross_decoder_lr5_big_fix_moreep_all2img_incr_alpha_0_3
+dataset:
+    freq_mismatch: 0.0
+    tokenized_raw_text: True
+model:
+    with_classif: False
+    network:
+        image_backbone_name: clip
+        recipe_encoder: h-transformer
+        n_heads: 4
+        n_layers: 2
+        n_layers_single: 2
+        n_heads_single: 4
+        old: True
+        path_vocab: /data/mshukor/data/recipe1m/text/vocab_all.txt
+        hidden_size: 512
+        with_titles: True
+
+        cross_transformer: False
+        cross_decoder_recipe: True
+        avg_concat: True
+        n_layers_cross: 2
+        n_heads_cross: 4
+        get_tokens_cross_decoder_recipe: True
+
+        cross_decoder_image: True
+        # context_image: 1 # 0 title, 1 ingrds, 2 instrs
+        n_heads_cross_image: 4
+        n_layers_cross_image: 1
+
+        class_attention: False
+        cls_token: False
+        class_attention_fus: False
+        cls_token_fus: False
+        get_tokens: True
+        freeze_rec: False 
+        freeze_im: False
+        vit_all_tokens: True
+        cross_encoder: True
+        cross_encoder_params:
+            cross_decoder: True
+            query_img: False
+            double_decoder: False
+            cross_attention: False
+            n_heads: 4
+            n_layers: 4    
+            class_attention: False
+            cls_token: False
+            get_tokens: False
+            load_backbones: False
+    criterion:
+        name: trijoint
+        keep_background: False
+        retrieval_strategy:
+            name: triplet # quadruplet, triplet, pairwise, or pairwise_pytorch
+            margin: 0.18
+            margin_params:
+                increment_margin: True
+                increment: 0.005
+                max_margin: 0.3
+            sampling: max_negative # random (outdated), max_negative, or prob_negative
+            nb_samples: 9999
+            aggregation: valid # mean, valid (adamine)
+            substrategy:
+                - IRR
+                - RII
+                - SIRR
+                - SRII
+            substrategy_weights:
+                - 1.0
+                - 1.0
+                - 0.1
+                - 0.1
+            get_tokens: True
+
+        cross_encoder: True
+        itm_loss_weight: 1
+        cross_encoder_params:
+            tri_cross_encoder: False
+    metric:
+        k_test: 10
+        trijoint: True
+misc:
+    cuda: True
+    seed: 1338
+    logs_name:
+    overrite: False
+    data_parrallel: False
+
+optimizer:
+    lr_img: 0.000001
+    lr: 0.00001
+
+engine:
+    nb_epochs: 120

@@ -1,0 +1,35 @@
+__include__: abstract.yaml
+exp:
+    dir: /data/mshukor/logs/recipe1m/adamine_vit
+dataset:
+    freq_mismatch: 0.0
+model:
+    with_classif: False
+    network:
+        image_backbone_name: vit
+        sort_batch: True
+    criterion:
+        name: trijoint
+        keep_background: False
+        retrieval_strategy:
+            name: triplet # quadruplet, triplet, pairwise, or pairwise_pytorch
+            margin: 0.3
+            sampling: max_negative # random (outdated), max_negative, or prob_negative
+            nb_samples: 9999
+            aggregation: valid # mean, valid (adamine)
+            substrategy:
+                - IRR
+                - RII
+                - SIRR
+                - SRII
+            substrategy_weights:
+                - 1.0
+                - 1.0
+                - 0.1
+                - 0.1
+misc:
+    cuda: True
+    seed: 1338
+    logs_name:
+    # device_id: 3 # can be a list for multigpus
+    overrite: False
