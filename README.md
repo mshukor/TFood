@@ -140,7 +140,12 @@ You can set `model.metric.trijoint` to false to obtain both metrics; from the du
 ## Citation
 
 ```
-
+@article{shukor2022transformer,
+  title={Transformer Decoders with MultiModal Regularization for Cross-Modal Food Retrieval},
+  author={Shukor, Mustafa and Couairon, Guillaume and Grechka, Asya and Cord, Matthieu},
+  journal={arXiv preprint arXiv:2204.09730},
+  year={2022}
+}
 ```
 
 
