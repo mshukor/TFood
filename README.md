@@ -1,3 +1,5 @@
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/transformer-decoders-with-multimodal/cross-modal-retrieval-on-recipe1m)](https://paperswithcode.com/sota/cross-modal-retrieval-on-recipe1m?p=transformer-decoders-with-multimodal)
+
 # T-Food
 Official implementation of the paper: 
 - [Transformer Decoders with MultiModal Regularization for Cross-Modal Food
