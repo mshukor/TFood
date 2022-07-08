@@ -1,5 +1,5 @@
 from bootstrap.lib.options import Options
-from .trijoint import Trijoint, TrijointCLIP
+from .trijoint import Trijoint
 
 def factory(model, engine=None):
 

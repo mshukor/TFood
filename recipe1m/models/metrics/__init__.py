@@ -1,1 +1,1 @@
-from .trijoint import Trijoint, CrossTrijoint, TriCrossTrijoint
+from .trijoint import Trijoint, CrossTrijoint

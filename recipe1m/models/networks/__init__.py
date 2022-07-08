@@ -1,1 +1,1 @@
-from .trijoint import Trijoint, TrijointCLIP, CrossTrijoint, TriCrossTrijoint, QCrossTrijoint
+from .trijoint import CrossTrijoint

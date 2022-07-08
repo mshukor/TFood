@@ -41,7 +41,6 @@ class CrossTrijoint(nn.Module):
         ## Cross encoder
         self.n_heads_cross = opt['cross_encoder_params'].get('n_heads', 1)
         self.n_layers_cross = opt['cross_encoder_params'].get('n_layers', 1)
-        self.pos_encode_cross = opt['cross_encoder_params'].get('pos_encode', False)
         self.pos_dropout_cross = opt['cross_encoder_params'].get('pos_dropout_cross', False)
         self.p_dropout_cross = opt['cross_encoder_params'].get('p_dropout', 0.1)
         self.cls_token_cross = opt['cross_encoder_params'].get('cls_token', False)
@@ -76,15 +75,12 @@ class CrossTrijoint(nn.Module):
         if self.itm_loss_weight > 0:
             if self.cross_decoder:
                 self.cross_encoder = TransformerDecoder(dim_in=self.dim_emb, n_heads=self.n_heads_cross, 
-                        n_layers=self.n_layers_cross, pos_encode=self.pos_encode_cross, max_seq_tokens=100,
-                        dropout=self.pos_dropout_cross, p_dropout=self.p_dropout_cross, class_token=self.cls_token_cross, 
-                        get_tokens=self.get_tokens_cross, class_attention=self.class_attention_cross, 
-                        cls_norm=self.cls_norm_cross, vis=self.vis)
+                        n_layers=self.n_layers_cross, max_seq_tokens=100,
+                        get_tokens=self.get_tokens_cross)
             else:
                 self.cross_encoder = Transformer(dim_in=self.dim_emb, n_heads=self.n_heads_cross, 
-                        n_layers=self.n_layers_cross, pos_encode=self.pos_encode_cross, max_seq_tokens=100,
-                        dropout=self.pos_dropout_cross, p_dropout=self.p_dropout_cross, class_token=self.cls_token_cross, 
-                        get_tokens=self.get_tokens_cross, class_attention=self.class_attention_cross, cls_norm=self.cls_norm_cross)
+                        n_layers=self.n_layers_cross, max_seq_tokens=100,
+                        get_tokens=self.get_tokens_cross)
         
             if self.cross_decoder_img:
                 self.n_heads_cross_image = opt.get('n_heads_cross_image', 4)
@@ -92,9 +88,8 @@ class CrossTrijoint(nn.Module):
                 self.dim_cross_image = self.dim_emb #self.image_embedding.dim_out
 
                 self.cross_decoder_image = TransformerDecoder(dim_in=self.dim_cross_image, n_heads=self.n_heads_cross_image, 
-                            n_layers=self.n_layers_cross_image, pos_encode=self.pos_encode_cross, max_seq_tokens=100,
-                            dropout=self.pos_dropout_cross, p_dropout=self.p_dropout_cross, class_token=self.cls_token_cross, 
-                            get_tokens=self.get_tokens_cross, class_attention=self.class_attention_cross, cls_norm=self.cls_norm_cross)
+                            n_layers=self.n_layers_cross_image, max_seq_tokens=100,
+                            get_tokens=self.get_tokens_cross,)
                 self.proj_recipe_to_image = nn.Linear(self.recipe_embedding.hidden_size, self.dim_cross_image)
 
             self.proj_cross = nn.Linear(self.dim_emb, 2)

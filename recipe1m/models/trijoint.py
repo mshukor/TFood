@@ -47,7 +47,7 @@ class Trijoint(Model):
                 nb_classes,
                 opt['network']['dim_emb'],
                 with_classif=opt['with_classif'],
-                engine=engine, tmp=self.network.recipe_embedding.tmp)
+                engine=engine)
 
             if self.cross_encoder_model and not self.trijoint_metric:
                 self.metrics['train'] = metrics.CrossTrijoint(
