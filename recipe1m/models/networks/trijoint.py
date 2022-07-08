@@ -235,8 +235,6 @@ class CrossTrijoint(nn.Module):
                 recipe_feats_neg.append(recipe_feat[neg_idx])
                 if self.cross_decoder_img:
                     recipe_feats_sep_neg.append(recipe_feat_sep[neg_idx])
-                if self.ignore_mask:
-                    recipe_feats_neg_masks.append(recipe_feat_mask[neg_idx])
             recipe_feats_neg = torch.stack(recipe_feats_neg,dim=0)   # (bs, l2, dim)
 
             if self.cross_decoder_img:
@@ -255,7 +253,7 @@ class CrossTrijoint(nn.Module):
             else:
                 image_feats_posneg = image_feats_all
 
-            if self.cross_attention_encoder or self.cross_decoder:
+            if self.cross_decoder:
                 output_neg = self.cross_encoder(recipe_feats_all, context=image_feats_posneg)
             else:
                 cross_input_neg = torch.cat((image_feats_posneg, recipe_feats_all), dim=1) # (bs+bs, l1 + l2, dim)
@@ -265,7 +263,7 @@ class CrossTrijoint(nn.Module):
             vl_embeddings = torch.cat([output_pos, output_neg],dim=0) # (bsx3, l1+l1, dim)
             vl_output = self.proj_cross(vl_embeddings)            
 
-            if len(vl_output.size()) > 2 and (self.cross_attention_encoder or self.cross_decoder or not self.cross_encoder.get_tokens):
+            if len(vl_output.size()) > 2 and (self.cross_decoder or not self.cross_encoder.get_tokens):
                 vl_output = vl_output.mean(1)
 
             itm_labels = torch.cat([torch.ones(bs,dtype=torch.long),torch.zeros(2*bs,dtype=torch.long)],
